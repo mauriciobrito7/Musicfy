@@ -1,5 +1,4 @@
 
-import './App.css';
 import firebase from './utils/firebase'
 
 function App() {
