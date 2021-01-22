@@ -50,6 +50,8 @@ export const RegisterForm = (props) => {
         .createUserWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
           console.log("Registro completado");
+          changeUserName();
+          sendVerificationEmail();
         })
         .catch(() => {
           console.log("Error al crear la cuenta");
@@ -58,6 +60,29 @@ export const RegisterForm = (props) => {
           setIsLoading(false);
         });
     }
+  };
+
+  const changeUserName = () => {
+    firebase
+      .auth()
+      .changeUser.updateProfile({
+        displayName: formData.username,
+      })
+      .catch(() => {
+        console.error("Error al asignar el nombre de usuario");
+      });
+  };
+
+  const sendVerificationEmail = () => {
+    firebase
+      .auth()
+      .currentUser.sendEmailVerification()
+      .then(() => {
+        console.log("Se ha enviado un email de verificacion");
+      })
+      .catch(() => {
+        console.error("Error al enviar el email de verificacion");
+      });
   };
 
   return (
