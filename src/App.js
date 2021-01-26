@@ -6,7 +6,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   firebase.auth().onAuthStateChanged((currentUser) => {
-    console.log(currentUser);
     if (!currentUser?.emailVerified) {
       firebase.auth().signOut();
       setUser(null);
