@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon, Form, Input } from "semantic-ui-react";
 import { validateEmail } from "../../utils/Validations";
 import firebase from "../../utils/firebase";
+import "firebase/auth";
 
 import "./RegisterForm.styles.scss";
 
@@ -12,15 +13,15 @@ export const RegisterForm = (props) => {
   const [formError, setFormError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const handlerShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handlerShowPassword = () => {
-    setShowPassword(!showPassword);
   };
 
   const onSubmit = () => {
@@ -32,32 +33,31 @@ export const RegisterForm = (props) => {
       errors.email = true;
       formOk = false;
     }
-
     if (formData.password.length < 6) {
       errors.password = true;
       formOk = false;
     }
-
     if (!formData.username) {
       errors.username = true;
       formOk = false;
     }
     setFormError(errors);
+
     if (formOk) {
       setIsLoading(true);
       firebase
         .auth()
         .createUserWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
-          console.log("Registro completado");
           changeUserName();
           sendVerificationEmail();
         })
         .catch(() => {
-          console.log("Error al crear la cuenta");
+          console.error("Error al crear la cuenta.");
         })
         .finally(() => {
           setIsLoading(false);
+          setSelectedForm(null);
         });
     }
   };
@@ -65,11 +65,11 @@ export const RegisterForm = (props) => {
   const changeUserName = () => {
     firebase
       .auth()
-      .changeUser.updateProfile({
+      .currentUser.updateProfile({
         displayName: formData.username,
       })
       .catch(() => {
-        console.error("Error al asignar el nombre de usuario");
+        console.error("Error al asignar el nombre de usuario.");
       });
   };
 
@@ -78,37 +78,37 @@ export const RegisterForm = (props) => {
       .auth()
       .currentUser.sendEmailVerification()
       .then(() => {
-        console.log("Se ha enviado un email de verificacion");
+        console.log("Se ha enviado un email de verificacion.");
       })
       .catch(() => {
-        console.error("Error al enviar el email de verificacion");
+        console.log("Error al enviar el email de verificacion.");
       });
   };
 
   return (
-    <div className="register-form ">
-      <h1>Empieza a escuchar con una cuenta de Musicfy gratis</h1>
+    <div className="register-form">
+      <h1>Empieza a escuchar con una cuenta de Musicfy gratis.</h1>
       <Form onSubmit={onSubmit} onChange={onChange}>
         <Form.Field>
           <Input
             type="text"
             name="email"
-            placeholder="Correo electronico"
+            placeholder="Correo electrónico"
             icon="mail outline"
             error={formError.email}
           />
           {formError.email && (
             <span className="error-text">
-              Por favor, introduce un correo electronico valido
+              Por favor, introduce un correo electronico válido.
             </span>
           )}
         </Form.Field>
-
         <Form.Field>
           <Input
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="Contrasena"
+            placeholder="Contraseña"
+            error={formError.password}
             icon={
               showPassword ? (
                 <Icon
@@ -120,11 +120,10 @@ export const RegisterForm = (props) => {
                 <Icon name="eye" link onClick={handlerShowPassword} />
               )
             }
-            error={formError.password}
           />
           {formError.password && (
             <span className="error-text">
-              La contrasena debe ser mayor a 5 caracteres
+              Por favor, elige una contraseña superior a 5 caracteres.
             </span>
           )}
         </Form.Field>
@@ -132,38 +131,26 @@ export const RegisterForm = (props) => {
           <Input
             type="text"
             name="username"
-            placeholder="Como deberiamos llamarte?"
+            placeholder="¿Como deberíamos llamarte?"
             icon="user circle outline"
             error={formError.username}
           />
           {formError.username && (
-            <span className="error-text">Por favor introduce un nombre</span>
+            <span className="error-text">Por favor, introduce un nombre.</span>
           )}
         </Form.Field>
         <Button type="submit" loading={isLoading}>
           Continuar
         </Button>
-
-        <div className="register-form__options">
-          <p
-            onClick={() => {
-              setSelectedForm(null);
-            }}
-          >
-            Volver
-          </p>
-          <p>
-            Ya tienes Musicfy?{" "}
-            <span
-              onClick={() => {
-                setSelectedForm("login");
-              }}
-            >
-              Iniciar Sesion
-            </span>
-          </p>
-        </div>
       </Form>
+
+      <div className="register-form__options">
+        <p onClick={() => setSelectedForm(null)}>Vovler</p>
+        <p>
+          ¿Ya tienes Musicfy?{" "}
+          <span onClick={() => setSelectedForm("login")}>Iniciar sesión</span>
+        </p>
+      </div>
     </div>
   );
 };
