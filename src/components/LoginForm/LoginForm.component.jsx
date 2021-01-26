@@ -6,6 +6,11 @@ import "./LoginForm.styles.scss";
 
 export const LoginForm = (props) => {
   const { setSelectedForm } = props;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlerShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit = () => {};
   return (
@@ -23,10 +28,20 @@ export const LoginForm = (props) => {
         </Form.Field>
         <Form.Field>
           <Input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Contrasena"
-            icon="eye"
+            icon={
+              showPassword ? (
+                <Icon
+                  name="eye slash outline"
+                  link
+                  onClick={handlerShowPassword}
+                />
+              ) : (
+                <Icon name="eye" link onClick={handlerShowPassword} />
+              )
+            }
             // error={}
           />
         </Form.Field>
