@@ -101,7 +101,7 @@ export const LoginForm = (props) => {
           )}
         </Form.Field>
         <Button type="submit" loading={isLoading}>
-          Iniciar sesion
+          Iniciar sesionn
         </Button>
       </Form>
       {!userActive && (
