@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import firebase from "./utils/firebase";
 import { Auth } from "./pages/Auth/Auth";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [user, setUser] = useState(null);

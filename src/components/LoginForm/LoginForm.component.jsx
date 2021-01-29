@@ -3,6 +3,7 @@ import { Button, Form, Input, Icon } from "semantic-ui-react";
 import { validateEmail } from "../../utils/Validations";
 import firebase from "../../utils/firebase";
 import "./LoginForm.styles.scss";
+import { toast } from "react-toastify";
 
 export const LoginForm = (props) => {
   const { setSelectedForm } = props;
@@ -44,10 +45,11 @@ export const LoginForm = (props) => {
         .auth()
         .signInWithEmailAndPassword(formData.email, formData.password)
         .then((res) => {
+          console.log(user);
           setUser(res.user);
           setUserActive(res.user.emaiVerified);
           if (!res.user.emailVerified) {
-            console.log("Debes verificar tu email para ingresar");
+            toast.warning("Debes verificar tu email para ingresar");
           }
         })
         .catch((err) => {
@@ -101,7 +103,7 @@ export const LoginForm = (props) => {
           )}
         </Form.Field>
         <Button type="submit" loading={isLoading}>
-          Iniciar sesionn
+          Iniciar sesion
         </Button>
       </Form>
       {!userActive && (
@@ -142,7 +144,7 @@ function ButtonResetSendEmailVerification(props) {
     user
       .sendEmailVerification()
       .then(() => {
-        console.log("Se ha enviado el email de verificacion");
+        toast.success("Se ha enviado el email de verificacion");
       })
       .catch((err) => {
         handlerErrors(err.code);
@@ -167,15 +169,15 @@ function ButtonResetSendEmailVerification(props) {
 function handlerErrors(code) {
   switch (code) {
     case "auth/wrong-password":
-      console.log("El usuario o la contrasena son incorrectos");
+      toast.error("El usuario o la contrasena son incorrectos");
       break;
     case "auth/too-many-requests":
-      console.log(
+      toast.error(
         "Has enviado demasiadas solicitudes de reenvio de email de confirmacion en muy poco tiempo"
       );
       break;
     case "auth/user-not-found ":
-      console.log("El usuario o la contrasena son incorrectos");
+      toast.error("El usuario o la contrasena son incorrectos");
       break;
     default:
       break;
