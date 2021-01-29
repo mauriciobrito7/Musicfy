@@ -2,6 +2,7 @@
 
 .login-form {
   margin-top: 50px;
+
   h1 {
     color: $font-light;
     text-align: center;
@@ -13,8 +14,9 @@
     .field {
       .input {
         margin-bottom: 5px;
+
         input {
-          background: $background-grey;
+          background-color: $background-grey;
           border: 0;
           font-size: 16px;
           color: $font-light;
@@ -22,7 +24,7 @@
           &:hover,
           &:active,
           &:focus {
-            background-color: $background-greys-hover;
+            background-color: $background-grey-hover;
             border: 0;
           }
         }
@@ -38,9 +40,10 @@
         }
       }
     }
+
     .button {
       width: 100%;
-      background: $primary-color;
+      background-color: $primary-color;
       color: $font-light;
       text-transform: uppercase;
       margin-top: 10px;
@@ -60,6 +63,7 @@
     color: $font-light;
     padding: 20px 20px 0 20px;
     text-align: center;
+
     span {
       color: $primary-color;
       font-weight: bold;
@@ -68,6 +72,7 @@
       }
     }
   }
+
   &__options {
     margin-top: 50px;
     color: $font-light;
@@ -83,6 +88,7 @@
           cursor: pointer;
         }
       }
+
       &:last-of-type {
         color: $font-grey;
 

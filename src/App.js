@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import firebase from "./utils/firebase";
 import { Auth } from "./pages/Auth/Auth";
 import { ToastContainer } from "react-toastify";
+import { LoggedLayout } from "./layouts/LoggedLayout/LoggedLayout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,7 +21,22 @@ function App() {
     return "Loading";
   }
 
-  return !user ? <Auth /> : <h1>Usuario logeado</h1>;
+  return (
+    <>
+      {!user ? <Auth /> : <LoggedLayout user={user} />}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        puaseOnVisibilityChange
+        draggable
+        pauseOnHover={false}
+      />
+    </>
+  );
 }
 
 export default App;

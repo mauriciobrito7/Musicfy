@@ -29,6 +29,7 @@ export const LoginForm = (props) => {
     setFormError({});
     let errors = {};
     let formOk = true;
+
     if (!validateEmail(formData.email)) {
       errors.email = true;
       formOk = false;
@@ -44,17 +45,16 @@ export const LoginForm = (props) => {
       firebase
         .auth()
         .signInWithEmailAndPassword(formData.email, formData.password)
-        .then((res) => {
-          console.log(user);
-          setUser(res.user);
-          setUserActive(res.user.emaiVerified);
-          if (!res.user.emailVerified) {
-            toast.warning("Debes verificar tu email para ingresar");
+        .then((response) => {
+          setUser(response.user);
+          setUserActive(response.user.emailVerified);
+          if (!response.user.emailVerified) {
+            toast.warning(
+              "Para poder hacer login antes tienes que verificar la cuenta."
+            );
           }
         })
         .catch((err) => {
-          console.log(err);
-
           handlerErrors(err.code);
         })
         .finally(() => {
@@ -62,21 +62,23 @@ export const LoginForm = (props) => {
         });
     }
   };
+
   return (
     <div className="login-form">
-      <h1>Musica para todos</h1>
+      <h1>Música para todos.</h1>
+
       <Form onSubmit={onSubmit} onChange={onChange}>
         <Form.Field>
           <Input
             type="text"
             name="email"
-            placeholder="Correo electronico"
+            placeholder="Correo electrónico"
             icon="mail outline"
             error={formError.email}
           />
           {formError.email && (
             <span className="error-text">
-              Por favor, introduce un correo electronico valido
+              Por favor, introduce un correo electronico válido.
             </span>
           )}
         </Form.Field>
@@ -84,7 +86,8 @@ export const LoginForm = (props) => {
           <Input
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="Contrasena"
+            placeholder="Contraseña"
+            error={formError.password}
             icon={
               showPassword ? (
                 <Icon
@@ -96,41 +99,31 @@ export const LoginForm = (props) => {
                 <Icon name="eye" link onClick={handlerShowPassword} />
               )
             }
-            error={formError.password}
           />
           {formError.password && (
-            <span className="error-text">Contrasena incorrecta</span>
+            <span className="error-text">
+              Por favor, elige una contraseña superior a 5 caracteres.
+            </span>
           )}
         </Form.Field>
         <Button type="submit" loading={isLoading}>
-          Iniciar sesion
+          Iniciar Sesión
         </Button>
       </Form>
+
       {!userActive && (
         <ButtonResetSendEmailVerification
           user={user}
           setIsLoading={setIsLoading}
-          serUserActive={setUserActive}
+          setUserActive={setUserActive}
         />
       )}
 
       <div className="login-form__options">
-        <p
-          onClick={() => {
-            setSelectedForm(null);
-          }}
-        >
-          Volver
-        </p>
+        <p onClick={() => setSelectedForm(null)}>Vovler</p>
         <p>
-          No tienes cuenta?
-          <span
-            onClick={() => {
-              setSelectedForm("register");
-            }}
-          >
-            Registrarte
-          </span>
+          ¿No tienes cuenta?{" "}
+          <span onClick={() => setSelectedForm("register")}>Regístrarte</span>
         </p>
       </div>
     </div>
@@ -144,7 +137,7 @@ function ButtonResetSendEmailVerification(props) {
     user
       .sendEmailVerification()
       .then(() => {
-        toast.success("Se ha enviado el email de verificacion");
+        toast.success("Se ha enviado el email de verificacion.");
       })
       .catch((err) => {
         handlerErrors(err.code);
@@ -158,9 +151,8 @@ function ButtonResetSendEmailVerification(props) {
   return (
     <div className="resend-verification-email">
       <p>
-        Si no ha recibido el email de verificacion puedes volver a enviarlo
-        haciendo click
-        <span onClick={resendVerificationEmail}>aqui</span>
+        Si no has recibido el email de verificación puedes volver a enviarlo
+        haciendo click <span onClick={resendVerificationEmail}>aquí.</span>
       </p>
     </div>
   );
@@ -169,15 +161,15 @@ function ButtonResetSendEmailVerification(props) {
 function handlerErrors(code) {
   switch (code) {
     case "auth/wrong-password":
-      toast.error("El usuario o la contrasena son incorrectos");
+      toast.warning("El usuario o la contraseña son incorrecto.");
       break;
     case "auth/too-many-requests":
-      toast.error(
-        "Has enviado demasiadas solicitudes de reenvio de email de confirmacion en muy poco tiempo"
+      toast.warning(
+        "Has enviado demasiadas solicitudes de reenvio de email de confirmacion en muy poco tiempo."
       );
       break;
-    case "auth/user-not-found ":
-      toast.error("El usuario o la contrasena son incorrectos");
+    case "auth/user-not-found":
+      toast.warning("El usuario o la contraseña son incorrecto.");
       break;
     default:
       break;
@@ -188,6 +180,5 @@ function defaultValueForm() {
   return {
     email: "",
     password: "",
-    username: "",
   };
 }
