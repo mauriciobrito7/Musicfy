@@ -3,8 +3,10 @@ import { Switch, Route } from "react-router-dom";
 
 // Pages
 import Home from "../pages/Home/Home";
+import Settings from "../pages/Settings/Settings";
 
-const Routes = () => {
+const Routes = (props) => {
+  const { user } = props;
   return (
     <Switch>
       <Route path="/" exact>
@@ -14,7 +16,7 @@ const Routes = () => {
         <h1>Artistas</h1>
       </Route>
       <Route path="/settings" exact>
-        <h1>Configuracion de cuenta</h1>
+        <Settings user={user} />
       </Route>
     </Switch>
   );
