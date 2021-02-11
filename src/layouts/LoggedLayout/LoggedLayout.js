@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import MenuLeft from "../../components/MenuLeft/MenuLeft.component";
 import TopBar from "../../components/TopBar/TopBar.component";
 
-export const LoggedLayout = ({ user }) => {
+export const LoggedLayout = ({ user, setReloadApp }) => {
   return (
     <Router>
       <Grid className="logged-layout">
@@ -16,7 +16,7 @@ export const LoggedLayout = ({ user }) => {
           </Grid.Column>
           <Grid.Column className="content" width={13}>
             <TopBar user={user} />
-            <Routes />
+            <Routes user={user} setReloadApp={setReloadApp} />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

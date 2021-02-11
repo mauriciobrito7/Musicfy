@@ -20,7 +20,7 @@ const TopBar = ({ user, history }) => {
       </div>
       <div className="top-bar__right">
         <Link to="/settings">
-          <Image src={UserImage} />
+          <Image src={user.photoURL ? user.photoURL : UserImage} />
           {user.displayName}
         </Link>
         <Icon className="power off" onClick={logout} />
