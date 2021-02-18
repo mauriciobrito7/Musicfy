@@ -4,6 +4,7 @@ import { Menu, Icon } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
 import { isUserAdmin } from "../../utils/Api";
 import BasicModal from "../Modal/BasicModal/BasicModal.component";
+import AddArtist from "../Artists/AddArtist/AddArtist";
 
 const MenuLeft = ({ user, location }) => {
   const [activeMenu, setActiveMenu] = useState(location.pathname);
@@ -28,7 +29,7 @@ const MenuLeft = ({ user, location }) => {
     switch (type) {
       case "artist":
         setTitleModal("Nuevo artista");
-        setContentModal(<h2>Formulario nuevo artista</h2>);
+        setContentModal(<AddArtist />);
         setShowModal(true);
         break;
       case "song":
