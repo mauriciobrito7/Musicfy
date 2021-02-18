@@ -7,6 +7,7 @@ import firebase from "../../utils/firebase";
 const UploadAvatar = ({ user, setReloadApp }) => {
   const [avatarUrl, setAvatarUrl] = useState(user.photoURL);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     setAvatarUrl(URL.createObjectURL(file));
