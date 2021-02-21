@@ -8,7 +8,7 @@ const BasicSliderItems = ({ title, data, folderImage, urlName }) => {
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: 3,
     slidesToScroll: 1,
     centerMode: true,
     className: "basic-slider-items__list",
@@ -17,6 +17,7 @@ const BasicSliderItems = ({ title, data, folderImage, urlName }) => {
   if (data.leght < 5) {
     return null;
   }
+
   return (
     <div className="basic-slider-items">
       <h2>{title}</h2>
