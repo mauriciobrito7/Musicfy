@@ -35,7 +35,6 @@ const Home = () => {
           urlName="artist"
           data={artists}
         />
-        <h1>Home</h1>
       </div>
     </>
   );
