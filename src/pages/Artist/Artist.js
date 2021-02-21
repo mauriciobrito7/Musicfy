@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Artist.scss";
 import { withRouter } from "react-router-dom";
 import firebase from "../../utils/firebase";
+import BannerArtist from "../../components/Artists/BannerArtist/BannerArtist";
 
 const Artist = (props) => {
   const { params } = props.match;
@@ -22,7 +23,9 @@ const Artist = (props) => {
       });
   }, [params]);
 
-  return <div>{artist && <h2>{artist.name}</h2>}</div>;
+  return (
+    <div className="artist">{artist && <BannerArtist artist={artist} />}</div>
+  );
 };
 
 export default withRouter(Artist);
