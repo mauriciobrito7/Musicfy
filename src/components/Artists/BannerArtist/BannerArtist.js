@@ -4,7 +4,6 @@ import "./BannerArtist.scss";
 
 const BannerArtist = ({ artist }) => {
   const [bannerUrl, setBannerUrl] = useState(null);
-  console.log(bannerUrl);
 
   useEffect(() => {
     firebase
