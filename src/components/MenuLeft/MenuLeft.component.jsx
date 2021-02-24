@@ -5,6 +5,7 @@ import { Link, withRouter } from "react-router-dom";
 import { isUserAdmin } from "../../utils/Api";
 import BasicModal from "../Modal/BasicModal/BasicModal.component";
 import AddArtist from "../Artists/AddArtist/AddArtist";
+import AddAlbumForm from "../Albums/AddAlbumsForm/AddAlbumForm";
 
 const MenuLeft = ({ user, location }) => {
   const [activeMenu, setActiveMenu] = useState(location.pathname);
@@ -28,12 +29,17 @@ const MenuLeft = ({ user, location }) => {
   const handlerModal = (type) => {
     switch (type) {
       case "artist":
-        setTitleModal("Nuevo artista");
-        setContentModal(<AddArtist />);
+        setTitleModal("New artist");
+        setContentModal(<AddArtist setShowModal={setShowModal} />);
+        setShowModal(true);
+        break;
+      case "album":
+        setTitleModal("New Album");
+        setContentModal(<AddAlbumForm setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       case "song":
-        setTitleModal("Nueva cancion");
+        setTitleModal("New song");
         setContentModal(<h2>Formulario nueva cancion</h2>);
         setShowModal(true);
         break;
@@ -55,7 +61,7 @@ const MenuLeft = ({ user, location }) => {
             active={activeMenu === "/"}
             onClick={handlerMenu}
           >
-            <Icon name="home" /> Inicio
+            <Icon name="home" /> home
           </Menu.Item>
           <Menu.Item
             as={Link}
@@ -64,7 +70,16 @@ const MenuLeft = ({ user, location }) => {
             active={activeMenu === "/artists"}
             onClick={handlerMenu}
           >
-            <Icon name="music" /> Artistas
+            <Icon name="user" /> Artists
+          </Menu.Item>
+          <Menu.Item
+            as={Link}
+            to="/albums"
+            name="albums"
+            active={activeMenu === "/albums"}
+            onClick={handlerMenu}
+          >
+            <Icon name="window maximize outline" /> Albums
           </Menu.Item>
         </div>
         {userAdmin && (
@@ -74,14 +89,21 @@ const MenuLeft = ({ user, location }) => {
                 handlerModal("artist");
               }}
             >
-              <Icon name="plus square outline" /> Nuevo artista
+              <Icon name="plus square outline" /> New Artist
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => {
+                handlerModal("album");
+              }}
+            >
+              <Icon name="plus square outline" /> New Album
             </Menu.Item>
             <Menu.Item
               onClick={() => {
                 handlerModal("song");
               }}
             >
-              <Icon name="plus square outline" /> Nueva cancion
+              <Icon name="plus square outline" /> New song
             </Menu.Item>
           </div>
         )}
