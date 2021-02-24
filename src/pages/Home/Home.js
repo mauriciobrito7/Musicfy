@@ -6,6 +6,7 @@ import BasicSliderItems from "../../components/Sliders/BasicSliderItems/BasicSli
 
 const Home = () => {
   const [artists, setArtists] = useState([]);
+  const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
     firebase
@@ -25,6 +26,21 @@ const Home = () => {
       });
   }, []);
 
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("albums")
+      .get()
+      .then((albums) => {
+        const arrayAlbums =
+          albums?.docs.map((album) => {
+            const data = album.data();
+            data.id = album.id;
+            return data;
+          }) || [];
+        setAlbums(arrayAlbums);
+      });
+  }, []);
   return (
     <>
       <BannerHome />
@@ -34,6 +50,13 @@ const Home = () => {
           folderImage="artist"
           urlName="artist"
           data={artists}
+        />
+
+        <BasicSliderItems
+          title="Últimos álbumes"
+          data={albums}
+          folderImage="album"
+          urlName="album"
         />
       </div>
     </>
