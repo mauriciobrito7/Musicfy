@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import firebase from "./utils/firebase";
 import { Auth } from "./pages/Auth/Auth";
-import { ToastContainer } from "react-toastify";
 import { LoggedLayout } from "./layouts/LoggedLayout/LoggedLayout";
+import { Loader } from "semantic-ui-react";
 
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [reloadApp, setReloadApp] = useState(false);
+  const [setReloadApp] = useState(false);
 
   firebase.auth().onAuthStateChanged((currentUser) => {
     if (!currentUser?.emailVerified) {
@@ -20,7 +20,7 @@ function App() {
   });
 
   if (isLoading) {
-    return "Loading";
+    return <Loader>Loading...</Loader>;
   }
 
   return (
@@ -30,17 +30,6 @@ function App() {
       ) : (
         <LoggedLayout user={user} setReloadApp={setReloadApp} />
       )}
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        puaseOnVisibilityChange
-        draggable
-        pauseOnHover={false}
-      />
     </>
   );
 }

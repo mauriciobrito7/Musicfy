@@ -22,7 +22,7 @@
 
   .content {
     overflow-y: scroll;
-    height: calc(100vh - 105px);
+    height: 100%;
 
     &::-webkit-scrollbar {
       display: none;

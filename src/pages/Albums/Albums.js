@@ -38,6 +38,8 @@ const Albums = () => {
   );
 };
 
+export default Albums;
+
 function Album(props) {
   const { album } = props;
   const [imageUrl, setImageUrl] = useState(null);
@@ -64,5 +66,3 @@ function Album(props) {
     </Link>
   );
 }
-
-export default Albums;
