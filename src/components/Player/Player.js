@@ -3,19 +3,14 @@ import { Grid, Progress, Icon, Input, Image } from "semantic-ui-react";
 import ReactPlayer from "react-player";
 import "./Player.scss";
 
-const songData = {
-  image:
-    "https://images.pexels.com/photos/1370545/pexels-photo-1370545.jpeg?cs=srgb&dl=pexels-luis-quintero-1370545.jpg&fm=jpg",
-  name: "Efecto vocales",
-  url: "",
-};
-const Player = () => {
+const Player = ({ songData }) => {
   const [playing, setPlaying] = useState(false);
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [volume, setVolume] = useState(0.3);
 
   useEffect(() => {
+    console.log(songData?.url);
     if (songData?.url) {
       onStart();
     }
@@ -70,11 +65,12 @@ const Player = () => {
         </Grid.Column>
       </Grid>
       <ReactPlayer
+        className="react-player"
         url={songData?.url}
         playing={playing}
-        className="react-player"
         height="0"
         width="0"
+        volume={volume}
         onProgress={(e) => onProgress(e)}
       />
     </div>

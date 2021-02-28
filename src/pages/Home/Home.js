@@ -3,10 +3,12 @@ import BannerHome from "../../components/BannerHome/BannerHome";
 import "./Home.scss";
 import firebase from "../../utils/firebase";
 import BasicSliderItems from "../../components/Sliders/BasicSliderItems/BasicSliderItems";
+import SongsSlider from "../../components/Sliders/SongsSlider/SongsSlider";
 
-const Home = () => {
+const Home = ({ playerSong }) => {
   const [artists, setArtists] = useState([]);
   const [albums, setAlbums] = useState([]);
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
     firebase
@@ -41,23 +43,41 @@ const Home = () => {
         setAlbums(arrayAlbums);
       });
   }, []);
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("songs")
+      .limit(10)
+      .get()
+      .then((songs) => {
+        const arraySongs =
+          songs?.docs.map((song) => {
+            const data = song.data();
+            return data;
+          }) || [];
+        setSongs(arraySongs);
+      });
+  }, []);
+
   return (
     <>
       <BannerHome />
       <div className="home">
         <BasicSliderItems
-          title="last artists"
+          title="Last artists"
           folderImage="artist"
           urlName="artist"
           data={artists}
         />
 
         <BasicSliderItems
-          title="Últimos álbumes"
+          title="Last albums"
           data={albums}
           folderImage="album"
           urlName="album"
         />
+        <SongsSlider title="Last songs" data={songs} playerSong={playerSong} />
       </div>
     </>
   );

@@ -9,13 +9,12 @@ const Artists = React.lazy(() => import("../pages/Artists/Artists"));
 const Albums = React.lazy(() => import("../pages/Albums/Albums"));
 const Album = React.lazy(() => import("../pages/Album/Album"));
 
-const Routes = (props) => {
-  const { user, setReloadApp } = props;
+const Routes = ({ user, setReloadApp, playerSong }) => {
   return (
     <Suspense fallback={<Loader>Loading...</Loader>}>
       <Switch>
         <Route path="/" exact>
-          <Home />
+          <Home playerSong={playerSong} />
         </Route>
         <Route path="/artist/:id" exact>
           <Artist />
